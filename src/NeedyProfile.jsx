@@ -253,49 +253,49 @@ async function doUpdate() {
 }
 
   return (
-    <div className={`min-h-screen ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-indigo-50 via-blue-50 to-violet-50"}`}>
+    <div className={`min-h-screen overflow-x-hidden ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-indigo-50 via-blue-50 to-violet-50"}`}>
       {/* Navbar */}
-      <nav className="fixed w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-all duration-300">
-        <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-3 hover:scale-105 transition-transform">
-            <img src={logo} alt="MediHope Logo" className="w-10 h-10 rounded-full shadow-md" />
-            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+      <nav className="fixed w-full z-50 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center backdrop-blur-md bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-all duration-300">
+        <div className="flex items-center gap-2 md:gap-3">
+          <Link to="/" className="flex items-center gap-2 md:gap-3 hover:scale-105 transition-transform">
+            <img src={logo} alt="MediHope Logo" className="w-8 h-8 md:w-10 md:h-10 rounded-full shadow-md" />
+            <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
               MediHope
             </h1>
           </Link>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button
             onClick={handleGoBack}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition hover:scale-105"
+            className="flex items-center gap-1 md:gap-2 text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition hover:scale-105"
           >
-            <FaArrowLeft className="text-sm" />
-            <span className="text-sm">Back</span>
+            <FaArrowLeft className="text-xs md:text-sm" />
+            <span className="text-xs md:text-sm hidden sm:inline">Back</span>
           </button>
-          <Link to="/" className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition">
+          <Link to="/" className="hidden md:flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition">
             <FaArrowLeft className="text-sm" />
             <span className="text-sm">Back to Home</span>
           </Link>
           
           <button
               onClick={toggleDarkMode}
-              className="p-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all"
+              className="p-1 md:p-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all"
               title={darkMode ? "Light Mode" : "Dark Mode"}
             >
-              {darkMode ? <FaSun /> : <FaMoon />}
+              {darkMode ? <FaSun className="text-sm" /> : <FaMoon className="text-sm" />}
           </button>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div className="pt-24 pb-10 px-4 flex flex-col items-center">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-indigo-800 mb-4 flex items-center justify-center gap-3">
-            <span className="text-3xl">🧍</span> 
+      <div className="pt-20 md:pt-24 pb-6 md:pb-10 px-3 md:px-4 flex flex-col items-center w-full">
+        <div className="text-center mb-6 md:mb-8 w-full max-w-4xl">
+          <h1 className="text-2xl md:text-4xl font-bold text-indigo-800 mb-3 md:mb-4 flex items-center justify-center gap-2 md:gap-3">
+            <span className="text-xl md:text-3xl">🧍</span> 
             {editMode ? 'Update Needy Profile' : 'Needy Profile Registration'}
           </h1>
-          <p className="text-indigo-600 max-w-2xl">
+          <p className="text-indigo-600 max-w-2xl mx-auto text-sm md:text-base px-2">
             {editMode ? 
               'Update the profile information using our AI-powered Aadhaar recognition system for quick and accurate data extraction.' :
               'Register someone in need using our AI-powered Aadhaar recognition system for quick and accurate data extraction.'
@@ -303,22 +303,22 @@ async function doUpdate() {
           </p>
         </div>
 
-        <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl space-y-6 border border-gray-200 dark:border-gray-700 transition-colors duration-300">{/* Test Google AI Button */}
-        <div className="flex justify-center mb-6">
+        <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-4 md:p-8 lg:p-12 rounded-2xl md:rounded-3xl shadow-2xl space-y-4 md:space-y-6 border border-gray-200 dark:border-gray-700 transition-colors duration-300 mx-auto">{/* Test Google AI Button */}
+        <div className="flex justify-center mb-4 md:mb-6">
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4">{/* Email Input */}
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4">{/* Email Input */}
           <input
             type="email"
             placeholder="Enter Email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full md:flex-grow border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+            className="w-full md:flex-grow border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors text-sm md:text-base"
           />
           <button
             onClick={handleFetch}
-            className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-md transition-all hover:-translate-y-0.5"
+            className="px-4 md:px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-md transition-all hover:-translate-y-0.5 text-sm md:text-base whitespace-nowrap"
           >
             Fetch
           </button>
@@ -330,21 +330,21 @@ async function doUpdate() {
           name="contact"
           value={formData.contact}
           onChange={handleChange}
-          className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+          className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors text-sm md:text-base"
         />
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-2xl border-2 border-indigo-300 dark:border-indigo-500 shadow-md transition-colors">
-            <h3 className="font-bold text-indigo-700 dark:text-indigo-300 text-lg mb-3">📄 Aadhaar Front</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+          <div className="bg-white dark:bg-gray-700 p-4 md:p-6 rounded-xl md:rounded-2xl border-2 border-indigo-300 dark:border-indigo-500 shadow-md transition-colors">
+            <h3 className="font-bold text-indigo-700 dark:text-indigo-300 text-base md:text-lg mb-2 md:mb-3">📄 Aadhaar Front</h3>
             <input 
               type="file" 
               accept='image/*' 
               onChange={handleAadhaarFrontUpload} 
-              className="mb-4 text-gray-700 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 dark:file:bg-indigo-900 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-800 transition-colors" 
+              className="mb-3 md:mb-4 text-gray-700 dark:text-gray-300 file:mr-2 md:file:mr-4 file:py-1 md:file:py-2 file:px-2 md:file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 dark:file:bg-indigo-900 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-800 transition-colors text-xs md:text-sm" 
             />
             {previewFront && (
-              <div className="mb-4">
-                <img src={previewFront} alt="Aadhaar Front Preview" className="w-32 h-32 rounded-md object-cover border dark:border-gray-600 mb-2" />
+              <div className="mb-3 md:mb-4">
+                <img src={previewFront} alt="Aadhaar Front Preview" className="w-24 h-24 md:w-32 md:h-32 rounded-md object-cover border dark:border-gray-600 mb-2" />
               </div>
             )}
 
@@ -354,7 +354,7 @@ async function doUpdate() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 mb-2 md:mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors text-sm md:text-base"
             />
             <input
               type="text"
@@ -362,13 +362,13 @@ async function doUpdate() {
               name="dob"
               value={formData.dob}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 mb-2 md:mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors text-sm md:text-base"
             />
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors text-sm md:text-base"
             >
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
@@ -377,20 +377,20 @@ async function doUpdate() {
             </select>
           </div>
 
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-2xl border-2 border-pink-300 dark:border-pink-500 shadow-md transition-colors">
-            <h3 className="font-bold text-pink-700 dark:text-pink-300 text-lg mb-3">🏡 Aadhaar Back</h3>
+          <div className="bg-white dark:bg-gray-700 p-4 md:p-6 rounded-xl md:rounded-2xl border-2 border-pink-300 dark:border-pink-500 shadow-md transition-colors">
+            <h3 className="font-bold text-pink-700 dark:text-pink-300 text-base md:text-lg mb-2 md:mb-3">🏡 Aadhaar Back</h3>
             <input 
               type="file" 
               onChange={handleAadhaarBackUpload} 
-              className="mb-4 text-gray-700 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-pink-50 dark:file:bg-pink-900 file:text-pink-700 dark:file:text-pink-300 hover:file:bg-pink-100 dark:hover:file:bg-pink-800 transition-colors" 
+              className="mb-3 md:mb-4 text-gray-700 dark:text-gray-300 file:mr-2 md:file:mr-4 file:py-1 md:file:py-2 file:px-2 md:file:px-4 file:rounded-lg file:border-0 file:bg-pink-50 dark:file:bg-pink-900 file:text-pink-700 dark:file:text-pink-300 hover:file:bg-pink-100 dark:hover:file:bg-pink-800 transition-colors text-xs md:text-sm" 
               accept="image/*"
             />
             {previewBack && (
-              <div className="mb-4">
+              <div className="mb-3 md:mb-4">
                 <img 
                   src={previewBack} 
                   alt="Aadhaar Back Preview" 
-                  className="w-64 h-auto rounded-md object-contain border dark:border-gray-600"
+                  className="w-full max-w-64 h-auto rounded-md object-contain border dark:border-gray-600"
                 />
               </div>
             )}
@@ -399,15 +399,15 @@ async function doUpdate() {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors"
-              rows="4"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm md:text-base"
+              rows="3"
             ></textarea>
           </div>
         </div>
 
-        <div className="flex justify-center gap-6 mt-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-6 mt-6 md:mt-8">
           <button 
-            className={`py-3 px-8 rounded-lg font-semibold shadow-lg transition-all ${
+            className={`py-2 md:py-3 px-6 md:px-8 rounded-lg font-semibold shadow-lg transition-all text-sm md:text-base ${
               (!aadhaarFront && !previewFront) || (!aadhaarBack && !previewBack)
                 ? 'bg-gray-400 cursor-not-allowed opacity-50' 
                 : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:-translate-y-0.5'
@@ -418,7 +418,7 @@ async function doUpdate() {
             💾 Save Profile
           </button>
           <button 
-            className={`py-3 px-8 rounded-lg font-semibold shadow-lg transition-all ${
+            className={`py-2 md:py-3 px-6 md:px-8 rounded-lg font-semibold shadow-lg transition-all text-sm md:text-base ${
               !hasDataChanged()
                 ? 'bg-gray-400 cursor-not-allowed opacity-50' 
                 : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:-translate-y-0.5'
@@ -432,8 +432,8 @@ async function doUpdate() {
 
         {/* Help message for disabled save button */}
         {((!aadhaarFront && !previewFront) || (!aadhaarBack && !previewBack)) && (
-          <div className="mt-4 text-center">
-            <p className="text-red-500 dark:text-red-400 text-sm font-medium">
+          <div className="mt-3 md:mt-4 text-center px-2">
+            <p className="text-red-500 dark:text-red-400 text-xs md:text-sm font-medium">
               ⚠️ Please upload both Aadhaar front and back images to enable save button
             </p>
           </div>
@@ -441,8 +441,8 @@ async function doUpdate() {
 
         {/* Help message for disabled update button */}
         {!hasDataChanged() && (originalData.email || editMode) && (
-          <div className="mt-4 text-center">
-            <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">
+          <div className="mt-3 md:mt-4 text-center px-2">
+            <p className="text-yellow-600 dark:text-yellow-400 text-xs md:text-sm font-medium">
               ℹ️ Make changes to the form or images to enable update button
             </p>
           </div>
