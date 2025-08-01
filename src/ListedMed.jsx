@@ -168,19 +168,21 @@ function ListedMed() {
   }).length;
 
   return (
-    <div className={`min-h-screen w-full ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50"} bg-fixed`}>
+    <div className={`min-h-screen w-full overflow-x-hidden ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50"} bg-fixed`}>
       {/* Navigation Bar */}
       <nav className="bg-gradient-to-r from-pink-500 to-purple-600 dark:from-pink-700 dark:to-purple-800 shadow-lg sticky top-0 z-50 w-full">
         <div className="w-full px-4 md:px-6 py-3 md:py-4">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <div className="flex items-center gap-2 md:gap-3">
               <img src={logo} alt="NGO Logo" className="h-8 w-8 md:h-10 md:w-10 rounded-full" />
-              <h1 className="text-lg md:text-2xl font-bold text-white">Available Medicines</h1>
+              <h1 className="text-lg md:text-2xl font-bold text-white">
+                <span className="hidden sm:inline">Available </span>Medicines
+              </h1>
             </div>
             <div className="flex items-center gap-2 md:gap-4">
               <button
                 onClick={handleGoBack}
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 md:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all hover:scale-105 text-sm md:text-base"
+                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 md:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all hover:scale-105 text-sm md:text-base min-h-[44px]"
               >
                 <FaArrowLeft className="text-xs md:text-sm" />
                 <span className="hidden sm:inline">Back</span>
@@ -194,14 +196,14 @@ function ListedMed() {
               </Link>
               <Link
                 to="/"
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 md:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all text-sm md:text-base"
+                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 md:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all text-sm md:text-base min-h-[44px]"
               >
                 <FaHome className="text-xs md:text-sm" />
                 <span className="hidden sm:inline">Home</span>
               </Link>
               <button
                 onClick={toggleDarkMode}
-                className="p-1 md:p-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all"
+                className="p-2 md:p-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all min-h-[44px] min-w-[44px]"
                 title={darkMode ? "Light Mode" : "Dark Mode"}
               >
                 {darkMode ? <FaSun className="text-sm md:text-base" /> : <FaMoon className="text-sm md:text-base" />}
@@ -358,7 +360,7 @@ function ListedMed() {
                   <div key={index} className="bg-gray-50 dark:bg-gray-700 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all hover:-translate-y-1">
                     <div className="flex items-start justify-between mb-3 md:mb-4">
                       <div className="flex-1 pr-2">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-2">
+                        <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-2 break-words">
                           {medicine.medicine || 'Unknown Medicine'}
                         </h3>
                         <div className="space-y-1 md:space-y-2 text-xs md:text-sm">
@@ -418,13 +420,13 @@ function ListedMed() {
       {/* Medicine Details Modal */}
       {showModal && selectedMedicine && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto mx-2 md:mx-4">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-pink-500 to-red-500 p-4 md:p-6 rounded-t-xl">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg md:text-2xl font-bold text-white flex items-center gap-2 md:gap-3">
                   <FaPills className="text-white text-sm md:text-base" />
-                  Medicine Details
+                  <span className="hidden sm:inline">Medicine </span>Details
                 </h2>
                 <button
                   onClick={closeModal}
@@ -439,7 +441,7 @@ function ListedMed() {
             <div className="p-4 md:p-6">
               {/* Medicine Name and Status */}
               <div className="mb-4 md:mb-6">
-                <h3 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                <h3 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2 break-words">
                   {selectedMedicine.medicine || 'Unknown Medicine'}
                 </h3>
                 <div className="flex items-center gap-2 md:gap-3">
