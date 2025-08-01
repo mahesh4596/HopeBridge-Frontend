@@ -1,4 +1,7 @@
-// ... imports remain unchanged
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FaSun, FaMoon, FaInstagram, FaLinkedin, FaHeart, FaHandsHelping, FaPills } from "react-icons/fa";
+import logo from "./assets/logo1.png";
 
 export default function NavbarWithCardsAndFooter() {
   const [darkMode, setDarkMode] = useState(() => {
