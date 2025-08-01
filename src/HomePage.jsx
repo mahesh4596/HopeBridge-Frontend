@@ -1,0 +1,214 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FaMoon, FaSun, FaHeart, FaHandsHelping, FaPills } from "react-icons/fa";
+import { FiChevronDown } from "react-icons/fi";
+import logo from "./assets/logo1.png";
+
+export default function NavbarWithCardsAndFooter() {
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    // Apply dark mode class on initial load
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    const newDark = !darkMode;
+    setDarkMode(newDark);
+    localStorage.setItem("darkMode", newDark.toString());
+  };
+
+  const cardItems = [
+    {
+      title: "Needy Registration",
+      desc: "Quickly onboard the underprivileged using our Aadhaar-powered AI OCR.",
+      gradient: "from-indigo-400 via-indigo-500 to-purple-500",
+      icon: <FaHeart className="text-3xl mb-4 text-white opacity-90" />,
+    },
+    {
+      title: "Become a Donor",
+      desc: "Lend a helping hand by donating essential items to those who need them.",
+      gradient: "from-pink-400 via-pink-500 to-red-500",
+      icon: <FaHandsHelping className="text-3xl mb-4 text-white opacity-90" />,
+    },
+    {
+      title: "Medicine Donations",
+      desc: "Donate unused medicines securely and track their journey.",
+      gradient: "from-green-400 via-green-500 to-emerald-500",
+      icon: <FaPills className="text-3xl mb-4 text-white opacity-90" />,
+    },
+  ];
+
+  return (
+    <div className={`min-h-screen w-full ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50"} bg-fixed`}>
+      {/* Navbar */}
+      <nav
+        className={`fixed w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md transition-all duration-300 ${
+          isScrolled ? "bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700" : "bg-transparent"
+        }`}
+      >
+        <div className="flex items-center gap-3 cursor-pointer hover:scale-105 transition-transform">
+          <img src={logo} alt="HopeBridge Logo" className="w-10 h-10 rounded-full shadow-md" />
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent tracking-wide">
+            HopeBridge
+          </h1>
+        </div>
+
+        <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <Link to="/signup" className="relative group text-gray-700 dark:text-gray-200 hover:text-indigo-500 transition">
+            Sign Up
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-500 group-hover:w-full transition-all duration-300"></span>
+          </Link>
+
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 shadow-lg active:scale-90"
+            title={darkMode ? "Light Mode" : "Dark Mode"}
+          >
+            {darkMode ? <FaSun /> : <FaMoon />}
+          </button>
+          <div className="hover:scale-105 transition-transform">
+            <img
+              src="https://i.pravatar.cc/150?img=15"
+              alt="Profile"
+              className="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-md cursor-pointer"
+            />
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <div className="pt-32 pb-20 px-6 text-center max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6">
+          Bridging <span className="text-indigo-600 dark:text-indigo-400">Hope</span> to Those in Need
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          A compassionate platform connecting donors with underprivileged communities to provide essential resources and medicines.
+        </p>
+        {/* Content to be replaced */}
+        
+      </div>
+
+      {/* Cards Section */}
+      <section className="py-16 px-6">
+        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">
+          How <span className="text-indigo-600 dark:text-indigo-400">HopeBridge</span> Works
+        </h2>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {cardItems.map((card, i) => (
+            <div
+              key={i}
+              className={`p-8 rounded-2xl shadow-lg text-white bg-gradient-to-br ${card.gradient} hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
+            >
+              <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 group-hover:scale-150 transition-transform duration-500"></div>
+              <div className="relative z-10">
+                {card.icon}
+                <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
+                <p className="text-sm leading-relaxed opacity-90">{card.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 px-6 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 my-16">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">
+            Our <span className="text-indigo-600 dark:text-indigo-400">Impact</span>
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { number: "1.2K+", label: "Needy Registered" },
+              { number: "850+", label: "Active Donors" },
+              { number: "5.7K+", label: "Medicines Donated" },
+              { number: "24", label: "Cities Covered" },
+            ].map((stat, i) => (
+              <div
+                key={i}
+                className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow"
+              >
+                <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">{stat.number}</div>
+                <div className="text-gray-600 dark:text-gray-300 text-sm font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-gray-800 dark:to-gray-900 py-12 text-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img src={logo} alt="HopeBridge Logo" className="w-10 h-10 rounded-full" />
+                <h2 className="text-xl font-bold">HopeBridge</h2>
+              </div>
+              <p className="text-sm opacity-80">
+                Connecting compassion with need to build a better tomorrow.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-lg mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li><Link to="/" className="text-sm hover:underline opacity-80 hover:opacity-100">Home</Link></li>
+                <li><Link to="/signup" className="text-sm hover:underline opacity-80 hover:opacity-100">Sign Up</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-lg mb-4">Connect With Us</h3>
+              <div className="flex space-x-4">
+                <a 
+                  href="https://www.instagram.com/i_.am._mahesh/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition hover:-translate-y-1"
+                  title="Follow us on Instagram"
+                >
+                  <span className="text-xs">I</span>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/mahesh-singla-999292324/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition hover:-translate-y-1"
+                  title="Connect with us on LinkedIn"
+                >
+                  <span className="text-xs">L</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm opacity-80">
+            <p>
+              © {new Date().getFullYear()} <strong>HopeBridge</strong> — Made with <span className="text-pink-400">♥</span> by Mahesh
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
