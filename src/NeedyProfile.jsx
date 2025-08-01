@@ -219,9 +219,9 @@ async function doUpdate() {
       <nav className="fixed w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-all duration-300">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 hover:scale-105 transition-transform">
-            <img src={logo} alt="HopeBridge Logo" className="w-10 h-10 rounded-full shadow-md" />
+            <img src={logo} alt="MediHope Logo" className="w-10 h-10 rounded-full shadow-md" />
             <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              HopeBridge
+              MediHope
             </h1>
           </Link>
         </div>
