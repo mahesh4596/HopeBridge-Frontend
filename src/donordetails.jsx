@@ -309,7 +309,12 @@ function DonorDetails() {
               type="button" 
               value="💾 Save" 
               onClick={doSave} 
-              className="w-full md:w-1/2 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer" 
+              disabled={!formData.profilepic && !previewProfile}
+              className={`w-full md:w-1/2 py-3 rounded-xl font-semibold shadow-lg transition-all ${
+                (!formData.profilepic && !previewProfile) 
+                  ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+                  : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:shadow-xl hover:-translate-y-0.5 cursor-pointer'
+              }`}
             />
             <input 
               type="button" 
@@ -318,6 +323,15 @@ function DonorDetails() {
               className="w-full md:w-1/2 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer" 
             />
           </div>
+
+          {/* Help message for disabled save button */}
+          {(!formData.profilepic && !previewProfile) && (
+            <div className="mt-4 text-center">
+              <p className="text-red-500 dark:text-red-400 text-sm font-medium">
+                ⚠️ Please upload a profile picture to enable save button
+              </p>
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -368,8 +368,13 @@ async function doUpdate() {
 
         <div className="flex justify-center gap-6 mt-8">
           <button 
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 px-8 rounded-lg font-semibold shadow-lg transition-all hover:-translate-y-0.5" 
+            className={`py-3 px-8 rounded-lg font-semibold shadow-lg transition-all ${
+              (!aadhaarFront && !previewFront) || (!aadhaarBack && !previewBack)
+                ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+                : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:-translate-y-0.5'
+            }`}
             onClick={doSave}
+            disabled={(!aadhaarFront && !previewFront) || (!aadhaarBack && !previewBack)}
           >
             💾 Save Profile
           </button>
@@ -380,6 +385,16 @@ async function doUpdate() {
             ✏️ Update Profile
           </button>
         </div>
+
+        {/* Help message for disabled save button */}
+        {((!aadhaarFront && !previewFront) || (!aadhaarBack && !previewBack)) && (
+          <div className="mt-4 text-center">
+            <p className="text-red-500 dark:text-red-400 text-sm font-medium">
+              ⚠️ Please upload both Aadhaar front and back images to enable save button
+            </p>
+          </div>
+        )}
+
         </div>
       </div>
     </div>
