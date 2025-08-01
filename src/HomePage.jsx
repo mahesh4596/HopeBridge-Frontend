@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FaMoon, FaSun, FaHeart, FaHandsHelping, FaPills } from "react-icons/fa";
-import { FiChevronDown } from "react-icons/fi";
-import logo from "./assets/logo1.png";
+// ... imports remain unchanged
 
 export default function NavbarWithCardsAndFooter() {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("darkMode") === "true";
   });
-  const [showDropdown, setShowDropdown] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -55,11 +50,11 @@ export default function NavbarWithCardsAndFooter() {
   return (
     <div className={`min-h-screen w-full ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-100"} bg-fixed`}>
       {/* Navbar */}
-      <nav
-        className={`fixed w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md transition-all duration-300 ${
-          isScrolled ? "bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700" : "bg-transparent"
-        }`}
-      >
+      <nav className={`fixed w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/90 dark:bg-gray-900/90 shadow-lg border-b border-gray-200 dark:border-gray-700"
+            : "bg-transparent"
+        }`}>
         <div className="flex items-center gap-3 cursor-pointer hover:scale-105 transition-transform">
           <img src={logo} alt="MediHope Logo" className="w-10 h-10 rounded-full shadow-md" />
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent tracking-wide">
@@ -68,7 +63,7 @@ export default function NavbarWithCardsAndFooter() {
         </div>
 
         <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          <Link to="/signup" className="relative group text-gray-800 dark:text-gray-200 hover:text-indigo-600 transition">
+          <Link to="/signup" className="relative group text-neutral-800 dark:text-neutral-200 hover:text-indigo-600 transition">
             Sign Up
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
           </Link>
@@ -94,17 +89,17 @@ export default function NavbarWithCardsAndFooter() {
 
       {/* Hero Section */}
       <div className="pt-32 pb-20 px-6 text-center max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
           Bridging <span className="text-indigo-600 dark:text-indigo-400">Hope</span> to Those in Need
         </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg text-neutral-700 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
           A compassionate platform connecting donors with underprivileged communities to provide essential resources and medicines.
         </p>
       </div>
 
       {/* Cards Section */}
       <section className="py-16 px-6">
-        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+        <h2 className="text-3xl font-bold text-center text-neutral-900 dark:text-white mb-12">
           How <span className="text-indigo-600 dark:text-indigo-400">MediHope</span> Works
         </h2>
 
@@ -126,9 +121,9 @@ export default function NavbarWithCardsAndFooter() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 my-16">
+      <section className="py-16 px-6 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 mt-0">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+          <h2 className="text-3xl font-bold text-center text-neutral-900 dark:text-white mb-12">
             Our <span className="text-indigo-600 dark:text-indigo-400">Impact</span>
           </h2>
 
@@ -144,7 +139,7 @@ export default function NavbarWithCardsAndFooter() {
                 className="p-6 bg-indigo-100 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow"
               >
                 <div className="text-4xl font-bold text-indigo-700 dark:text-indigo-400 mb-2">{stat.number}</div>
-                <div className="text-gray-800 dark:text-gray-300 text-sm font-medium">{stat.label}</div>
+                <div className="text-neutral-800 dark:text-neutral-300 text-sm font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -176,22 +171,14 @@ export default function NavbarWithCardsAndFooter() {
             <div>
               <h3 className="font-bold text-lg mb-4">Connect With Us</h3>
               <div className="flex space-x-4">
-                <a
-                  href="https://www.instagram.com/i_.am._mahesh/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a href="https://www.instagram.com/i_.am._mahesh/" target="_blank" rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition hover:-translate-y-1"
-                  title="Follow us on Instagram"
-                >
+                  title="Instagram">
                   <span className="text-xs">I</span>
                 </a>
-                <a
-                  href="https://www.linkedin.com/in/mahesh-singla-999292324/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a href="https://www.linkedin.com/in/mahesh-singla-999292324/" target="_blank" rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition hover:-translate-y-1"
-                  title="Connect with us on LinkedIn"
-                >
+                  title="LinkedIn">
                   <span className="text-xs">L</span>
                 </a>
               </div>
