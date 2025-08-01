@@ -22,31 +22,47 @@ export default function NeedyProfileRegistration() {
     address: ''
   });
 
+  const [originalData, setOriginalData] = useState({
+    email: '',
+    contact: '',
+    name: '',
+    dob: '',
+    gender: '',
+    address: ''
+  });
+
   const [aadhaarFront, setAadhaarFront] = useState(null);
   const [aadhaarBack, setAadhaarBack] = useState(null);
   const [previewFront, setPreviewFront] = useState(null);
   const [previewBack, setPreviewBack] = useState(null);
+  const [originalPreviewFront, setOriginalPreviewFront] = useState(null);
+  const [originalPreviewBack, setOriginalPreviewBack] = useState(null);
 
   const loadNeedyData = async (id) => {
     try {
       const response = await axios.get(server_url + `/needy/fetch/${id}`);
       if (response.data.status === true) {
         const data = response.data.obj;
-        setFormData({
+        const loadedData = {
           email: data.email || '',
           contact: data.contact || '',
           name: data.name || '',
           dob: data.dob || '',
           gender: data.gender || '',
           address: data.address || ''
-        });
+        };
+        
+        setFormData(loadedData);
+        setOriginalData(loadedData); // Store original data for comparison
         
         // Set preview images if they exist
         if (data.aadhaarFrontUrl) {
           setPreviewFront(data.aadhaarFrontUrl);
+          setOriginalPreviewFront(data.aadhaarFrontUrl);
         }
         if (data.aadhaarBackUrl) {
           setPreviewBack(data.aadhaarBackUrl);
+          setOriginalPreviewBack(data.aadhaarBackUrl);
         }
       }
     } catch (error) {
@@ -75,6 +91,23 @@ useEffect(() => {
     let value = event.target.value;
     setFormData({ ...formData, [name]: value });
   }
+
+  // Function to check if data has changed
+  const hasDataChanged = () => {
+    // Check if form data has changed
+    const formChanged = Object.keys(formData).some(key => 
+      formData[key] !== originalData[key]
+    );
+    
+    // Check if images have changed
+    const imagesChanged = 
+      (previewFront !== originalPreviewFront) || 
+      (previewBack !== originalPreviewBack) ||
+      aadhaarFront !== null || 
+      aadhaarBack !== null;
+    
+    return formChanged || imagesChanged;
+  };
 
   async function handleAadhaarFrontUpload(event) {
     const file = event.target.files[0];
@@ -149,16 +182,22 @@ async function handleAadhaarBackUpload(event) {
       const res = await axios.get(server_url + `/needy/fetch/${formData.email}`);
       if (res.data.status == true) {
         const data = res.data.obj;
-        setFormData({ 
+        const fetchedData = { 
           email: data.email,
           contact: data.contact,
           name: data.name,
           dob: data.dob,
           gender: data.gender,
           address: data.address
-        });
+        };
+        
+        setFormData(fetchedData);
+        setOriginalData(fetchedData); // Store original data for comparison
+        
         setPreviewFront(res.data.obj.aadhaarFrontUrl);
         setPreviewBack(res.data.obj.aadhaarBackUrl);
+        setOriginalPreviewFront(res.data.obj.aadhaarFrontUrl);
+        setOriginalPreviewBack(res.data.obj.aadhaarBackUrl);
       } else {
         alert("Needy not found");
       }
@@ -379,8 +418,13 @@ async function doUpdate() {
             💾 Save Profile
           </button>
           <button 
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-8 rounded-lg font-semibold shadow-lg transition-all hover:-translate-y-0.5" 
+            className={`py-3 px-8 rounded-lg font-semibold shadow-lg transition-all ${
+              !hasDataChanged()
+                ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+                : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:-translate-y-0.5'
+            }`}
             onClick={doUpdate}
+            disabled={!hasDataChanged()}
           >
             ✏️ Update Profile
           </button>
@@ -391,6 +435,15 @@ async function doUpdate() {
           <div className="mt-4 text-center">
             <p className="text-red-500 dark:text-red-400 text-sm font-medium">
               ⚠️ Please upload both Aadhaar front and back images to enable save button
+            </p>
+          </div>
+        )}
+
+        {/* Help message for disabled update button */}
+        {!hasDataChanged() && (originalData.email || editMode) && (
+          <div className="mt-4 text-center">
+            <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">
+              ℹ️ Make changes to the form or images to enable update button
             </p>
           </div>
         )}

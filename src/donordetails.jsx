@@ -16,14 +16,35 @@ function DonorDetails() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const [formData, setFormData] = useState({ emailid: "", name: "", age: "", gender: "", curcity: "", curaddress: "", qualification: "", occupation: "", contact: "", adhaarpic: "", profilepic: "" });
+  const [originalData, setOriginalData] = useState({ emailid: "", name: "", age: "", gender: "", curcity: "", curaddress: "", qualification: "", occupation: "", contact: "", adhaarpic: "", profilepic: "" });
 
   const [previewAadhaar, setPreviewAadhaar] = useState("");
   const [previewProfile, setPreviewProfile] = useState("");
+  const [originalPreviewAadhaar, setOriginalPreviewAadhaar] = useState("");
+  const [originalPreviewProfile, setOriginalPreviewProfile] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   }
+
+  // Function to check if data has changed
+  const hasDataChanged = () => {
+    // Check if form data has changed
+    const formChanged = Object.keys(formData).some(key => {
+      if (key === 'adhaarpic' || key === 'profilepic') return false; // Skip file fields
+      return formData[key] !== originalData[key];
+    });
+    
+    // Check if images have changed
+    const imagesChanged = 
+      (previewAadhaar !== originalPreviewAadhaar) || 
+      (previewProfile !== originalPreviewProfile) ||
+      (formData.adhaarpic && typeof formData.adhaarpic === 'object') || 
+      (formData.profilepic && typeof formData.profilepic === 'object');
+    
+    return formChanged || imagesChanged;
+  };
 
   const handleGoBack = () => {
       navigate(-1); // Go back to previous page
@@ -53,8 +74,11 @@ function DonorDetails() {
       
       if (data.status === true) {
         setFormData(data.obj);
+        setOriginalData(data.obj); // Store original data for comparison
         setPreviewAadhaar(data.obj.adhaarpic);
         setPreviewProfile(data.obj.profilepic);
+        setOriginalPreviewAadhaar(data.obj.adhaarpic);
+        setOriginalPreviewProfile(data.obj.profilepic);
         alert("Data loaded successfully!");
       } else {
         alert(data.msg || "No existing data found for this email");
@@ -320,7 +344,12 @@ function DonorDetails() {
               type="button" 
               value="✏️ Update" 
               onClick={doUpdate} 
-              className="w-full md:w-1/2 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer" 
+              disabled={!hasDataChanged()}
+              className={`w-full md:w-1/2 py-3 rounded-xl font-semibold shadow-lg transition-all ${
+                !hasDataChanged() 
+                  ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+                  : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:shadow-xl hover:-translate-y-0.5 cursor-pointer'
+              }`}
             />
           </div>
 
@@ -329,6 +358,15 @@ function DonorDetails() {
             <div className="mt-4 text-center">
               <p className="text-red-500 dark:text-red-400 text-sm font-medium">
                 ⚠️ Please upload a profile picture to enable save button
+              </p>
+            </div>
+          )}
+
+          {/* Help message for disabled update button */}
+          {!hasDataChanged() && originalData.emailid && (
+            <div className="mt-4 text-center">
+              <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">
+                ℹ️ Make changes to the form or images to enable update button
               </p>
             </div>
           )}
