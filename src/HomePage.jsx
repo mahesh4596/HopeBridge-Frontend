@@ -80,13 +80,6 @@ export default function NavbarWithCardsAndFooter() {
           >
             {darkMode ? <FaSun /> : <FaMoon />}
           </button>
-          <div className="hover:scale-105 transition-transform">
-            <img
-              src="https://i.pravatar.cc/150?img=15"
-              alt="Profile"
-              className="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-md cursor-pointer"
-            />
-          </div>
         </div>
       </nav>
 
