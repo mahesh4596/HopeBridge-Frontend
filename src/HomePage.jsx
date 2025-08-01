@@ -65,7 +65,7 @@ export default function NavbarWithCardsAndFooter() {
           </h1>
         </div>
 
-        <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <div className="flex items-center space-x-6 text-sm font-medium">
           <Link to="/signup" className="relative group text-neutral-800 dark:text-neutral-200 hover:text-indigo-600 transition">
             Sign Up
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
