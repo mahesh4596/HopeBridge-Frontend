@@ -92,17 +92,17 @@ export default function NavbarWithCardsAndFooter() {
 
       {/* Hero Section */}
       <div className="pt-32 pb-20 px-6 text-center max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-green-400 dark:text-green-400 mb-6">
           Bridging <span className="text-indigo-600 dark:text-indigo-400">Hope</span> to Those in Need
         </h1>
-        <p className="text-lg text-neutral-700 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-indigo-300 mb-8 max-w-2xl mx-auto">
           A compassionate platform connecting donors with underprivileged communities to provide essential resources and medicines.
         </p>
       </div>
 
       {/* Cards Section */}
       <section className="py-16 px-6">
-        <h2 className="text-3xl font-bold text-center text-neutral-900 dark:text-white mb-12">
+        <h2 className="text-3xl font-bold text-center text-green-400 dark:text-green-400 mb-12">
           How <span className="text-indigo-600 dark:text-indigo-400">MediHope</span> Works
         </h2>
 
@@ -124,10 +124,10 @@ export default function NavbarWithCardsAndFooter() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-gray-800 dark:to-gray-900 mt-0">
+      <section className={`py-12 text-white ${darkMode ? "bg-gradient-to-r from-gray-800 to-gray-900" : "bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100"}`}>
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-neutral-900 dark:text-white mb-12">
-            Our <span className="text-indigo-600 dark:text-indigo-400">Impact</span>
+            Our <span className="text-indigo-600 dark:text-indigo-800">Impact</span>
           </h2>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaMoon, FaSun, FaHome, FaArrowLeft, FaPills, FaSearch, FaFilter, FaBuilding, FaCalendarAlt, FaPhone } from 'react-icons/fa';
+import { FaMoon, FaSun, FaHome, FaArrowLeft, FaPills, FaSearch, FaFilter, FaBuilding, FaCalendarAlt, FaPhone, FaTimes, FaUser, FaEnvelope, FaMapMarkerAlt, FaGraduationCap } from 'react-icons/fa';
 import axios from 'axios';
 import logo from "./assets/logo1.png";
 import { server_url } from './config/url';
@@ -13,14 +13,18 @@ function ListedMed() {
 
   const [medicines, setMedicines] = useState([]);
   const [filteredMedicines, setFilteredMedicines] = useState([]);
+  const [donors, setDonors] = useState({});
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all');
   const [emailFilter, setEmailFilter] = useState('');
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
     loadMedicines();
+    loadDonors();
   }, [darkMode]);
 
   useEffect(() => {
@@ -54,6 +58,36 @@ function ListedMed() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadDonors = async () => {
+    try {
+      const response = await axios.get(server_url + '/donor/fetch');
+      if (response.data.status === true) {
+        // Create a map of email to donor details for quick lookup
+        const donorMap = {};
+        response.data.data.forEach(donor => {
+          if (donor.emailid) {
+            donorMap[donor.emailid] = donor;
+          }
+        });
+        setDonors(donorMap);
+      } else {
+        console.error("Failed to fetch donors:", response.data.msg);
+        setDonors({});
+      }
+    } catch (error) {
+      console.error("Error loading donors:", error);
+      setDonors({});
+    }
+  };
+
+  // Function to get donor name by email
+  const getDonorName = (email) => {
+    if (email && donors[email]) {
+      return donors[email].name || 'Anonymous Donor';
+    }
+    return 'Anonymous Donor';
   };
 
   const filterMedicines = () => {
@@ -104,6 +138,16 @@ function ListedMed() {
 
   const clearEmailFilter = () => {
     setEmailFilter('');
+  };
+
+  const handleMedicineClick = (medicine) => {
+    setSelectedMedicine(medicine);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedMedicine(null);
   };
 
   // Calculate statistics
@@ -179,13 +223,6 @@ function ListedMed() {
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Browse available medicines donated by the community. Search by medicine name, company, or filter by your email to see specific donations.
           </p>
-          <Link
-            to="/donate/medicine"
-            className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-semibold shadow-lg transition-all hover:-translate-y-0.5"
-          >
-            <FaPills />
-            Donate Medicine
-          </Link>
         </div>
 
         {/* Statistics Cards */}
@@ -362,10 +399,11 @@ function ListedMed() {
                         </span>
                       </div>
                       <button 
+                        onClick={() => handleMedicineClick(medicine)}
                         className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white py-2 px-4 rounded-lg font-semibold transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={isExpired}
                       >
-                        {isExpired ? 'Expired' : 'Request Medicine'}
+                        {isExpired ? 'Expired' : 'View Details & Request'}
                       </button>
                     </div>
                   </div>
@@ -376,6 +414,167 @@ function ListedMed() {
         </div>
         </div>
       </div>
+
+      {/* Medicine Details Modal */}
+      {showModal && selectedMedicine && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 rounded-t-xl">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <FaPills className="text-white" />
+                  Medicine Details
+                </h2>
+                <button
+                  onClick={closeModal}
+                  className="p-2 hover:bg-white/20 rounded-full transition-all"
+                >
+                  <FaTimes className="text-white text-xl" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              {/* Medicine Name and Status */}
+              <div className="mb-6">
+                <h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                  {selectedMedicine.medicine || 'Unknown Medicine'}
+                </h3>
+                <div className="flex items-center gap-3">
+                  <span className={`px-4 py-2 text-sm rounded-full font-medium ${
+                    selectedMedicine.expdate && new Date(selectedMedicine.expdate) <= new Date()
+                      ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                      : selectedMedicine.expdate && Math.ceil((new Date(selectedMedicine.expdate) - new Date()) / (1000 * 60 * 60 * 24)) <= 30
+                      ? 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200'
+                      : 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                  }`}>
+                    {selectedMedicine.expdate && new Date(selectedMedicine.expdate) <= new Date()
+                      ? 'Expired'
+                      : selectedMedicine.expdate && Math.ceil((new Date(selectedMedicine.expdate) - new Date()) / (1000 * 60 * 60 * 24)) <= 30
+                      ? 'Expiring Soon'
+                      : 'Valid'
+                    }
+                  </span>
+                  <span className="text-2xl font-bold text-pink-500">
+                    Qty: {selectedMedicine.qty || 0}
+                  </span>
+                </div>
+              </div>
+
+              {/* Medicine Information Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div className="flex items-center gap-3 mb-2">
+                      <FaBuilding className="text-pink-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">Company</span>
+                    </div>
+                    <p className="text-gray-800 dark:text-white text-lg">
+                      {selectedMedicine.company || 'Unknown Company'}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div className="flex items-center gap-3 mb-2">
+                      <FaCalendarAlt className="text-pink-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">Expiry Date</span>
+                    </div>
+                    <p className="text-gray-800 dark:text-white text-lg">
+                      {selectedMedicine.expdate ? new Date(selectedMedicine.expdate).toLocaleDateString() : 'No expiry date'}
+                    </p>
+                  </div>
+
+                  {/* Packing Information */}
+                  {selectedMedicine.packing && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <div className="flex items-center gap-3 mb-2">
+                        <FaPills className="text-pink-500" />
+                        <span className="font-semibold text-gray-700 dark:text-gray-300">Packing</span>
+                      </div>
+                      <p className="text-gray-800 dark:text-white text-lg">
+                        {selectedMedicine.packing}
+                      </p>
+                    </div>
+                  )}
+                  
+                </div>
+
+                <div className="space-y-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div className="flex items-center gap-3 mb-2">
+                      <FaPhone className="text-pink-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">Contact Number</span>
+                    </div>
+                    <p className="text-gray-800 dark:text-white text-lg">
+                      {selectedMedicine.contactno || 'No contact number'}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div className="flex items-center gap-3 mb-2">
+                      <FaUser className="text-pink-500" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">Donor Name</span>
+                    </div>
+                    <p className="text-gray-800 dark:text-white text-lg">
+                      {getDonorName(selectedMedicine.emailid)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Information */}
+              {selectedMedicine.emailid && (
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <FaEnvelope className="text-pink-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-300">Donor Email</span>
+                  </div>
+                  <p className="text-gray-800 dark:text-white text-lg">
+                    {selectedMedicine.emailid}
+                  </p>
+                </div>
+              )}
+
+              {/* Donor's Address from donor details */}
+
+              {/* Additional donor phone if different from medicine contact */}
+              {selectedMedicine.emailid && donors[selectedMedicine.emailid] && donors[selectedMedicine.emailid].phoneNo && 
+               donors[selectedMedicine.emailid].phoneNo !== selectedMedicine.contactno && (
+                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <FaPhone className="text-pink-500" />
+                    <span className="font-semibold text-gray-700 dark:text-gray-300">Donor Phone</span>
+                  </div>
+                  <p className="text-gray-800 dark:text-white text-lg">
+                    {donors[selectedMedicine.emailid].phoneNo}
+                  </p>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={closeModal}
+                  className="flex-1 px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all"
+                >
+                  Close
+                </button>
+                <button
+                  disabled={selectedMedicine.expdate && new Date(selectedMedicine.expdate) <= new Date()}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {selectedMedicine.expdate && new Date(selectedMedicine.expdate) <= new Date()
+                    ? 'Medicine Expired'
+                    : 'Request This Medicine'
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
