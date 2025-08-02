@@ -13,11 +13,15 @@ function DonorDashboard() {
 
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState(localStorage.getItem('donorEmail') || '');
+  const [showEmailInput, setShowEmailInput] = useState(!localStorage.getItem('donorEmail'));
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
-    loadDonations();
-  }, [darkMode]);
+    if (userEmail) {
+      loadDonations();
+    }
+  }, [darkMode, userEmail]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -32,8 +36,13 @@ function DonorDashboard() {
       const response = await axios.get(server_url + '/medicine/fetch');
       console.log('API Response:', response.data); // Debug log
       if (response.data.status === true) {
-        setDonations(response.data.data || []);
-        console.log('Donations loaded:', response.data.data); // Debug log
+        const allMedicines = response.data.data || [];
+        // Filter medicines by user email if email is set
+        const userDonations = userEmail 
+          ? allMedicines.filter(medicine => medicine.emailid === userEmail)
+          : [];
+        setDonations(userDonations);
+        console.log('User donations loaded:', userDonations); // Debug log
       } else {
         console.error('API returned false status:', response.data.msg);
         setDonations([]);
@@ -46,8 +55,23 @@ function DonorDashboard() {
     }
   };
 
+  const handleEmailSubmit = (e) => {
+    e.preventDefault();
+    if (userEmail.trim()) {
+      localStorage.setItem('donorEmail', userEmail);
+      setShowEmailInput(false);
+      loadDonations();
+    }
+  };
+
+  const handleChangeEmail = () => {
+    setShowEmailInput(true);
+    setDonations([]);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('userRole');
+    localStorage.removeItem('donorEmail');
     navigate('/');
   };
 
@@ -133,20 +157,67 @@ function DonorDashboard() {
           </Link>
         </div>
 
+        {/* Email Input Section */}
+        {showEmailInput && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6 border border-gray-200 dark:border-gray-700 mt-6 md:mt-8">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-4 md:mb-6">Enter Your Email</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base">
+              Please enter your email address to view your personal donations
+            </p>
+            <form onSubmit={handleEmailSubmit} className="max-w-md mx-auto">
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                  placeholder="Enter your email address..."
+                  className="flex-1 px-4 py-2 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="px-4 md:px-6 py-2 md:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all text-sm md:text-base"
+                >
+                  View My Donations
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
         {/* Recent Donations Section */}
         <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6 border border-gray-200 dark:border-gray-700 mt-6 md:mt-8">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-4 md:mb-6">Your Recent Donations</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Your Recent Donations</h2>
+            {userEmail && !showEmailInput && (
+              <div className="text-sm text-gray-600 dark:text-gray-300 mt-2 sm:mt-0">
+                <span className="mr-2">Viewing donations for: <strong>{userEmail}</strong></span>
+                <button
+                  onClick={handleChangeEmail}
+                  className="text-blue-500 hover:text-blue-600 underline"
+                >
+                  Change Email
+                </button>
+              </div>
+            )}
+          </div>
           
-          {loading ? (
+          {!userEmail || showEmailInput ? (
+            <div className="text-center py-6 md:py-8">
+              <FaPills className="text-4xl md:text-6xl text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4">Enter your email to view donations</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">Please enter your email address above to see your personal donations</p>
+            </div>
+          ) : loading ? (
             <div className="text-center py-6 md:py-8">
               <div className="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-blue-500 mx-auto"></div>
-              <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm md:text-base">Loading donations...</p>
+              <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm md:text-base">Loading your donations...</p>
             </div>
           ) : donations.length === 0 ? (
             <div className="text-center py-6 md:py-8">
               <FaPills className="text-4xl md:text-6xl text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4">No donations yet</p>
-              <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm md:text-base">Start by donating your first medicine</p>
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4">No donations found for {userEmail}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm md:text-base">Start by donating your first medicine or check if you used a different email</p>
               <Link
                 to="/donate/medicine"
                 className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg md:rounded-xl font-semibold shadow-lg transition-all hover:-translate-y-0.5 text-sm md:text-base"
@@ -179,12 +250,6 @@ function DonorDashboard() {
                         <FaPills className="text-white text-sm md:text-lg" />
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="pt-2 md:pt-3 border-t border-gray-200 dark:border-gray-600">
-                    <span className="text-xs text-gray-500 dark:text-gray-400 break-all">
-                      Donated by: {donation.emailid}
-                    </span>
                   </div>
                 </div>
               ))}
