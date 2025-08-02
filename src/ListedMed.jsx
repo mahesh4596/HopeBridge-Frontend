@@ -257,28 +257,30 @@ function ListedMed() {
               <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">
                 Filter by Email (Donor)
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   placeholder="Enter donor email..."
                   value={emailFilter}
                   onChange={(e) => setEmailFilter(e.target.value)}
-                  className="flex-1 px-3 md:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                  className="flex-1 px-3 md:px-4 py-2 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm md:text-base"
                 />
-                <button
-                  onClick={handleFetchByEmail}
-                  className="px-3 md:px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all text-sm whitespace-nowrap"
-                >
-                  Fetch
-                </button>
-                {emailFilter && (
+                <div className="flex gap-2">
                   <button
-                    onClick={clearEmailFilter}
-                    className="px-3 md:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all text-sm whitespace-nowrap"
+                    onClick={handleFetchByEmail}
+                    className="flex-1 sm:flex-initial px-4 md:px-6 py-2 md:py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all text-sm md:text-base font-medium whitespace-nowrap min-h-[40px] md:min-h-[44px]"
                   >
-                    Clear
+                    Fetch
                   </button>
-                )}
+                  {emailFilter && (
+                    <button
+                      onClick={clearEmailFilter}
+                      className="flex-1 sm:flex-initial px-4 md:px-6 py-2 md:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all text-sm md:text-base font-medium whitespace-nowrap min-h-[40px] md:min-h-[44px]"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
