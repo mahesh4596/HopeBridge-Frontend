@@ -228,22 +228,22 @@ function ListedMed() {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
+          <div className="bg-white dark:bg-gray-800 p-3 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-blue-500 mb-1 md:mb-2">{totalMedicines}</div>
+              <div className="text-xl md:text-3xl font-bold text-blue-500 mb-1 md:mb-2">{totalMedicines}</div>
               <div className="text-gray-600 dark:text-gray-300 text-xs md:text-sm font-medium">Total Medicines</div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 p-3 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-orange-500 mb-1 md:mb-2">{expiringSoon}</div>
+              <div className="text-xl md:text-3xl font-bold text-orange-500 mb-1 md:mb-2">{expiringSoon}</div>
               <div className="text-gray-600 dark:text-gray-300 text-xs md:text-sm font-medium">Expiring Soon</div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 p-3 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 col-span-2 md:col-span-1">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-red-500 mb-1 md:mb-2">{expired}</div>
+              <div className="text-xl md:text-3xl font-bold text-red-500 mb-1 md:mb-2">{expired}</div>
               <div className="text-gray-600 dark:text-gray-300 text-xs md:text-sm font-medium">Expired</div>
             </div>
           </div>
@@ -251,9 +251,9 @@ function ListedMed() {
 
         {/* Search and Filter Section */}
         <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mb-6 md:mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
             {/* Email Filter */}
-            <div className="space-y-1 md:space-y-2">
+            <div className="space-y-2">
               <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">
                 Filter by Email (Donor)
               </label>
@@ -267,14 +267,14 @@ function ListedMed() {
                 />
                 <button
                   onClick={handleFetchByEmail}
-                  className="px-3 md:px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all text-sm"
+                  className="px-3 md:px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all text-sm whitespace-nowrap"
                 >
                   Fetch
                 </button>
                 {emailFilter && (
                   <button
                     onClick={clearEmailFilter}
-                    className="px-3 md:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all text-sm"
+                    className="px-3 md:px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all text-sm whitespace-nowrap"
                   >
                     Clear
                   </button>
@@ -283,7 +283,7 @@ function ListedMed() {
             </div>
 
             {/* Search */}
-            <div className="space-y-1 md:space-y-2">
+            <div className="space-y-2">
               <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">
                 Search Medicines
               </label>
@@ -300,7 +300,7 @@ function ListedMed() {
             </div>
 
             {/* Filter */}
-            <div className="space-y-1 md:space-y-2">
+            <div className="space-y-2">
               <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">
                 Filter by Status
               </label>
@@ -359,27 +359,27 @@ function ListedMed() {
                 return (
                   <div key={index} className="bg-gray-50 dark:bg-gray-700 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all hover:-translate-y-1">
                     <div className="flex items-start justify-between mb-3 md:mb-4">
-                      <div className="flex-1 pr-2">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-2 break-words">
+                      <div className="flex-1 pr-3">
+                        <h3 className="text-base md:text-xl font-bold text-gray-800 dark:text-white mb-2 break-words">
                           {medicine.medicine || 'Unknown Medicine'}
                         </h3>
-                        <div className="space-y-1 md:space-y-2 text-xs md:text-sm">
+                        <div className="space-y-1 text-xs md:text-sm">
                           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                            <FaBuilding className="text-gray-400 text-xs" />
+                            <FaBuilding className="text-gray-400 text-xs flex-shrink-0" />
                             <span className="truncate">{medicine.company || 'Unknown Company'}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                            <FaCalendarAlt className="text-gray-400 text-xs" />
+                            <FaCalendarAlt className="text-gray-400 text-xs flex-shrink-0" />
                             <span className="truncate">Expires: {medicine.expdate ? new Date(medicine.expdate).toLocaleDateString() : 'No expiry date'}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                            <FaPhone className="text-gray-400 text-xs" />
+                            <FaPhone className="text-gray-400 text-xs flex-shrink-0" />
                             <span className="truncate">{medicine.contactno || 'No contact number'}</span>
                           </div>
                         </div>
                       </div>
-                      <div className="ml-2">
-                        <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center">
+                      <div className="flex-shrink-0">
+                        <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center">
                           <FaPills className="text-white text-sm md:text-xl" />
                         </div>
                       </div>
@@ -387,7 +387,7 @@ function ListedMed() {
                     
                     <div className="pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-600">
                       <div className="flex items-center justify-between mb-2 md:mb-3">
-                        <span className="text-base md:text-lg font-semibold text-gray-800 dark:text-white">
+                        <span className="text-sm md:text-lg font-semibold text-gray-800 dark:text-white">
                           Qty: {medicine.qty || 0}
                         </span>
                         <span className={`px-2 md:px-3 py-1 text-xs rounded-full font-medium ${
@@ -402,10 +402,15 @@ function ListedMed() {
                       </div>
                       <button 
                         onClick={() => handleMedicineClick(medicine)}
-                        className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white py-2 px-4 rounded-lg font-semibold transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                        className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white py-2 md:py-3 px-4 rounded-lg font-semibold transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-base"
                         disabled={isExpired}
                       >
-                        {isExpired ? 'Expired' : 'View Details & Request'}
+                        {isExpired ? 'Expired' : (
+                          <>
+                            <span className="md:hidden">View Details</span>
+                            <span className="hidden md:inline">View Details & Request</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

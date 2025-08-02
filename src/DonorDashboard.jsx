@@ -164,21 +164,22 @@ function DonorDashboard() {
             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base">
               Please enter your email address to view your personal donations
             </p>
-            <form onSubmit={handleEmailSubmit} className="max-w-md mx-auto">
-              <div className="flex gap-2">
+            <form onSubmit={handleEmailSubmit} className="space-y-3 md:space-y-0">
+              <div className="flex flex-col md:flex-row gap-2 md:gap-2 md:max-w-md md:mx-auto">
                 <input
                   type="email"
                   value={userEmail}
                   onChange={(e) => setUserEmail(e.target.value)}
                   placeholder="Enter your email address..."
-                  className="flex-1 px-4 py-2 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+                  className="flex-1 px-3 md:px-4 py-2 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
                   required
                 />
                 <button
                   type="submit"
-                  className="px-4 md:px-6 py-2 md:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all text-sm md:text-base"
+                  className="w-full md:w-auto px-4 md:px-6 py-2 md:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all text-sm md:text-base whitespace-nowrap"
                 >
-                  View My Donations
+                  <span className="md:hidden">View Donations</span>
+                  <span className="hidden md:inline">View My Donations</span>
                 </button>
               </div>
             </form>
